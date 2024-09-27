@@ -1,9 +1,8 @@
 package com.github.jonatanbengtsson94.workoutlog.model;
 
+import java.util.ArrayList;
+
 public class Exercise {
-    private Set[] sets;
-
-    public void addSet(Set set) {
-
-    }
+    private ArrayList<Set> sets;
+    private ExerciseName exercisePerformed;
 }
