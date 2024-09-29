@@ -23,6 +23,7 @@ public class DatabaseContract {
 
     public static class WorkoutTable implements BaseColumns {
         public static final String TABLE_NAME = "workouts";
+        public static final String COLUMN_WORKOUT_ID = "workout_id";
         public static final String COLUMN_WORKOUT_NAME = "workout_name";
         public static final String COLUMN_DATE_PERFORMED = "date_performed";
     }
