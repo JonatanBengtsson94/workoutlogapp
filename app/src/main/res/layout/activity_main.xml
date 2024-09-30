@@ -9,15 +9,26 @@
     tools:context=".ui.activities.MainActivity">
 
     <Button
-        android:id="@+id/btnNewWorkout"
+        android:id="@+id/btnNewEmptyWorkout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Start new workout"
+        android:text="Start new empty workout"
         app:layout_constraintWidth_percent="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnHistory" />
+        app:layout_constraintBottom_toTopOf="@id/btnNewTemplateWorkout" />
+
+    <Button
+        android:id="@+id/btnNewTemplateWorkout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Start new workout from template"
+        app:layout_constraintWidth_percent="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btnNewEmptyWorkout"
+        app:layout_constraintBottom_toBottomOf="@id/btnHistory" />
 
     <Button
         android:id="@+id/btnHistory"
@@ -28,6 +39,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnNewWorkout" />
+        app:layout_constraintTop_toBottomOf="@+id/btnNewTemplateWorkout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
