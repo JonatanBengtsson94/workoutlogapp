@@ -1,6 +1,8 @@
 package com.github.jonatanbengtsson94.workoutlog.ui.activities;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,22 @@ public class MainActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        Button btnNewEmptyWorkout = findViewById(R.id.btnNewEmptyWorkout);
+        Button btnNewTemplateWorkout = findViewById(R.id.btnNewTemplateWorkout);
+        Button btnHistory = findViewById(R.id.btnHistory);
+
+        btnNewEmptyWorkout.setOnClickListener(v -> {
+
+        });
+
+        btnNewTemplateWorkout.setOnClickListener(v -> {
+
+        });
+
+        btnHistory.setOnClickListener(v -> {
+
         });
     }
 }
