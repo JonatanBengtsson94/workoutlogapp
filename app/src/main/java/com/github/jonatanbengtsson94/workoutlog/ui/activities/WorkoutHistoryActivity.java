@@ -1,9 +1,6 @@
 package com.github.jonatanbengtsson94.workoutlog.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,34 +10,17 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.github.jonatanbengtsson94.workoutlog.R;
 
-public class MainActivity extends AppCompatActivity {
+public class WorkoutHistoryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_workout_history);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
-        });
-
-        Button btnNewEmptyWorkout = findViewById(R.id.btnNewEmptyWorkout);
-        Button btnNewTemplateWorkout = findViewById(R.id.btnNewTemplateWorkout);
-        Button btnHistory = findViewById(R.id.btnHistory);
-
-        btnNewEmptyWorkout.setOnClickListener(v -> {
-
-        });
-
-        btnNewTemplateWorkout.setOnClickListener(v -> {
-
-        });
-
-        btnHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WorkoutHistoryActivity.class);
-            startActivity(intent);
         });
     }
 }
