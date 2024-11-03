@@ -1,12 +1,20 @@
 package com.github.jonatanbengtsson94.workoutlog.database;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.WorkoutsTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExercisesPerformedTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.SetsTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExerciseTable;
+import com.github.jonatanbengtsson94.workoutlog.model.Exercise;
+import com.github.jonatanbengtsson94.workoutlog.model.Set;
+import com.github.jonatanbengtsson94.workoutlog.model.Workout;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "workoutlog.db";
@@ -55,6 +63,97 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    private long insertWorkout (String workoutName, LocalDate datePerformed) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
+        String dateString = datePerformed.format(formatter);
+
+        values.put(WorkoutsTable.COLUMN_WORKOUT_NAME, workoutName);
+        values.put(WorkoutsTable.COLUMN_DATE_PERFORMED, dateString);
+
+        long workoutId = db.insert(WorkoutsTable.TABLE_NAME, null, values);
+
+        if (workoutId == -1) {
+            throw new RuntimeException("Failed to insert workout");
+        }
+
+        return workoutId;
+    }
+
+    private long insertExercisePerformed(long exerciseId, long workoutId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK, exerciseId);
+        values.put(ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK, workoutId);
+
+        long exercisePerformedId = db.insert(ExercisesPerformedTable.TABLE_NAME, null, values);
+
+        if (exercisePerformedId == -1) {
+            throw new RuntimeException("Failed to insert exercise");
+        }
+
+        return exercisePerformedId;
+    }
+
+    private long insertSet(int reps, float weight, long exercisePerformedId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(SetsTable.COLUMN_REPS, reps);
+        values.put(SetsTable.COLUMN_WEIGHT, weight);
+        values.put(SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK, exercisePerformedId);
+
+        long setId = db.insert(SetsTable.TABLE_NAME, null, values);
+
+        if (setId == -1) {
+            throw new RuntimeException("Failed to insert set");
+        }
+
+        return setId;
+    }
+
+    public void addWorkout(Workout workout) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            long workoutId = insertWorkout(workout.getName(), workout.getDatePerformed());
+            for (Exercise exercise: workout.getExercises()) {
+                long exercisePerformedId = insertExercisePerformed(getExerciseId(exercise.getName()), workoutId);
+                for (Set set: exercise.getSets()) {
+                    long setId = insertSet(set.getReps(), set.getWeight(), exercisePerformedId);
+                }
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    private long getExerciseId(String exerciseName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.query(
+                ExerciseTable.TABLE_NAME,
+                new String[]{ExerciseTable.COLUMN_EXERCISE_ID},
+                ExerciseTable.COLUMN_EXERCISE_NAME + "=?",
+                new String[]{exerciseName},
+                null, null, null);
+
+        int columnIndex = cursor.getColumnIndex(ExerciseTable.COLUMN_EXERCISE_ID);
+        int exerciseId = -1;
+        if (columnIndex >= 0) {
+            exerciseId = cursor.getInt(columnIndex);
+        }
+        cursor.close();
+
+        return exerciseId;
     }
 
     private void insertInitialData(SQLiteDatabase db) {
