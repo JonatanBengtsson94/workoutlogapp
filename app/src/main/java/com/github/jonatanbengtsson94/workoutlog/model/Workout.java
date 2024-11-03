@@ -7,4 +7,8 @@ public class Workout {
     private String name;
     private LocalDate datePerformed;
     private ArrayList<Exercise> exercises;
+
+    public String getName() { return name; }
+    public LocalDate getDatePerformed() { return datePerformed; }
+    public ArrayList<Exercise> getExercises() { return new ArrayList<Exercise>(exercises); }
 }
