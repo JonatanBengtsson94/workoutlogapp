@@ -9,12 +9,13 @@ import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.Workou
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExercisesPerformedTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.SetsTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExerciseTable;
-import com.github.jonatanbengtsson94.workoutlog.model.Exercise;
+import com.github.jonatanbengtsson94.workoutlog.model.ExercisePerformed;
 import com.github.jonatanbengtsson94.workoutlog.model.Set;
 import com.github.jonatanbengtsson94.workoutlog.model.Workout;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "workoutlog.db";
@@ -122,9 +123,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             long workoutId = insertWorkout(workout.getName(), workout.getDatePerformed());
-            for (Exercise exercise: workout.getExercises()) {
-                long exercisePerformedId = insertExercisePerformed(getExerciseId(exercise.getName()), workoutId);
-                for (Set set: exercise.getSets()) {
+            for (ExercisePerformed exercisePerformed: workout.getExercisesPerformed()) {
+                long exercisePerformedId = insertExercisePerformed(exercisePerformed.getExerciseId(), workoutId);
+                for (Set set: exercisePerformed.getSets()) {
                     long setId = insertSet(set.getReps(), set.getWeight(), exercisePerformedId);
                 }
             }
@@ -136,24 +137,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    private long getExerciseId(String exerciseName) {
+    public ArrayList<Workout> getAllWorkouts() {
+        ArrayList<Workout> workouts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(
-                ExerciseTable.TABLE_NAME,
-                new String[]{ExerciseTable.COLUMN_EXERCISE_ID},
-                ExerciseTable.COLUMN_EXERCISE_NAME + "=?",
-                new String[]{exerciseName},
-                null, null, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + WorkoutsTable.TABLE_NAME, null);
 
-        int columnIndex = cursor.getColumnIndex(ExerciseTable.COLUMN_EXERCISE_ID);
-        int exerciseId = -1;
-        if (columnIndex >= 0) {
-            exerciseId = cursor.getInt(columnIndex);
+        if (cursor.moveToNext()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_WORKOUT_ID));
+                String name = cursor.getString(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_WORKOUT_NAME));
+                String datePerformedString = cursor.getString(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_DATE_PERFORMED));
+                LocalDate datePerformed = LocalDate.parse(datePerformedString, DateTimeFormatter.ISO_LOCAL_DATE);
+                workouts.add(new Workout(id, name, datePerformed));
+            } while (cursor.moveToNext());
         }
         cursor.close();
-
-        return exerciseId;
+        db.close();
+        return workouts;
     }
 
     private void insertInitialData(SQLiteDatabase db) {

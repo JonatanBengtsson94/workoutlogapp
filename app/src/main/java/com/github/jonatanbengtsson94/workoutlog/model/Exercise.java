@@ -1,11 +1,11 @@
 package com.github.jonatanbengtsson94.workoutlog.model;
 
-import java.util.ArrayList;
-
 public class Exercise {
-    private ArrayList<Set> sets;
+    private int id;
     private String name;
-
-    public String getName() { return name; }
-    public ArrayList<Set> getSets() { return new ArrayList<>(sets); }
+    public Exercise(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+    public int getId() { return id; }
 }

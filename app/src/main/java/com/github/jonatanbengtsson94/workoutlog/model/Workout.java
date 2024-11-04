@@ -4,11 +4,18 @@ import java.util.ArrayList;
 import java.time.LocalDate;
 
 public class Workout {
+    private int id;
     private String name;
     private LocalDate datePerformed;
-    private ArrayList<Exercise> exercises;
+    private ArrayList<ExercisePerformed> exercisesPerformed;
+    public Workout(int id, String name, LocalDate datePerformed) {
+        this.id = id;
+        this.name = name;
+        this.datePerformed = datePerformed;
+        this.exercisesPerformed = new ArrayList<>();
+    }
 
     public String getName() { return name; }
     public LocalDate getDatePerformed() { return datePerformed; }
-    public ArrayList<Exercise> getExercises() { return new ArrayList<Exercise>(exercises); }
+    public ArrayList<ExercisePerformed> getExercisesPerformed() { return new ArrayList<>(exercisesPerformed); }
 }
