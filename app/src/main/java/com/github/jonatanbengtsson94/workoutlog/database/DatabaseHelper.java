@@ -28,14 +28,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_EXERCISE_TABLE = "CREATE TABLE " + ExerciseTable.TABLE_NAME + " ("
-                + ExerciseTable.COLUMN_EXERCISE_ID + "INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ExerciseTable.COLUMN_EXERCISE_NAME + "TEXT)";
+                + ExerciseTable.COLUMN_EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + ExerciseTable.COLUMN_EXERCISE_NAME + " TEXT)";
         db.execSQL(CREATE_EXERCISE_TABLE);
 
         String CREATE_WORKOUTS_TABLE = "CREATE TABLE " + WorkoutsTable.TABLE_NAME + " ("
                 + WorkoutsTable.COLUMN_WORKOUT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + WorkoutsTable.COLUMN_WORKOUT_NAME + " TEXT, "
-                + WorkoutsTable.COLUMN_DATE_PERFORMED + "TEXT)";
+                + WorkoutsTable.COLUMN_DATE_PERFORMED + " TEXT)";
         db.execSQL(CREATE_WORKOUTS_TABLE);
 
         String CREATE_EXERCISES_PERFORMED_TABLE = "CREATE TABLE " + ExercisesPerformedTable.TABLE_NAME + " ("
@@ -53,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + SetsTable.COLUMN_SET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + SetsTable.COLUMN_REPS + " INTEGER, "
                 + SetsTable.COLUMN_WEIGHT + " REAL, "
-                + SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + "INTEGER, "
+                + SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + " INTEGER, "
                 + "FOREIGN KEY(" + SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + ") REFERENCES "
                 + ExercisesPerformedTable.TABLE_NAME + "(" + ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + "))";
         db.execSQL(CREATE_SETS_TABLE);
@@ -153,7 +153,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
-        db.close();
         return workouts;
     }
 
