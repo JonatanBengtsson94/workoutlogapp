@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.github.jonatanbengtsson94.workoutlog.App;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.WorkoutsTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExercisesPerformedTable;
 import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.SetsTable;
@@ -26,9 +28,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static synchronized DatabaseHelper getInstance(Context context) {
+    public static synchronized DatabaseHelper getInstance() {
         if (instance == null) {
-            instance = new DatabaseHelper(context.getApplicationContext());
+            Context appContext = App.getAppContext();
+            instance = new DatabaseHelper(appContext);
         }
         return instance;
     }

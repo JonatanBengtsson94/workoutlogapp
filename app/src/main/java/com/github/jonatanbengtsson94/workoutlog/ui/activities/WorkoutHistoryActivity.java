@@ -27,7 +27,7 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        DatabaseHelper db = DatabaseHelper.getInstance(WorkoutHistoryActivity.this);
+        DatabaseHelper db = DatabaseHelper.getInstance();
         ArrayList<Workout> workouts = db.getAllWorkouts();
         for (Workout workout: workouts) {
             Log.i("workout", workout.getName());
