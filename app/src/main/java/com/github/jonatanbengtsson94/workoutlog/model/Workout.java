@@ -1,5 +1,8 @@
 package com.github.jonatanbengtsson94.workoutlog.model;
 
+import com.github.jonatanbengtsson94.workoutlog.database.DatabaseHelper;
+import com.github.jonatanbengtsson94.workoutlog.ui.activities.WorkoutHistoryActivity;
+
 import java.util.ArrayList;
 import java.time.LocalDate;
 
@@ -17,5 +20,14 @@ public class Workout {
 
     public String getName() { return name; }
     public LocalDate getDatePerformed() { return datePerformed; }
-    public ArrayList<ExercisePerformed> getExercisesPerformed() { return new ArrayList<>(exercisesPerformed); }
+    public ArrayList<ExercisePerformed> getExercisesPerformed() {
+        if (exercisesPerformed == null) {
+            loadExercisesPerformed();
+        }
+        return new ArrayList<>(exercisesPerformed);
+    }
+    private void loadExercisesPerformed() {
+        DatabaseHelper db = DatabaseHelper.getInstance();
+        exercisesPerformed = db.getExercisesPerformedByWorkoutId(id);
+    }
 }

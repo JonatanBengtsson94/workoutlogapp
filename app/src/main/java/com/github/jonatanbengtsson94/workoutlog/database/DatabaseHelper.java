@@ -154,7 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("SELECT * FROM " + WorkoutsTable.TABLE_NAME, null);
 
-        if (cursor.moveToNext()) {
+        if (cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_WORKOUT_ID));
                 String name = cursor.getString(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_WORKOUT_NAME));
@@ -165,6 +165,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return workouts;
+    }
+
+    public ArrayList<ExercisePerformed> getExercisesPerformedByWorkoutId(int workoutId) {
+        ArrayList<ExercisePerformed> exercisesPerformed = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query =  "SELECT * FROM " + ExercisesPerformedTable.TABLE_NAME + " WHERE " + ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " = ?";
+        String[] selectionArgs = { String.valueOf(workoutId) };
+        Cursor cursor = db.rawQuery(query, selectionArgs);
+
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID));
+                int exerciseId = cursor.getInt(cursor.getColumnIndexOrThrow(ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK));
+                exercisesPerformed.add(new ExercisePerformed(id, workoutId, exerciseId));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return exercisesPerformed;
     }
 
     private void insertInitialData(SQLiteDatabase db) {
