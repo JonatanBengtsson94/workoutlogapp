@@ -10,12 +10,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.github.jonatanbengtsson94.workoutlog.R;
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseHelper;
 import com.github.jonatanbengtsson94.workoutlog.model.Workout;
+import com.github.jonatanbengtsson94.workoutlog.model.WorkoutLog;
 
 import java.util.ArrayList;
 
 public class WorkoutHistoryActivity extends AppCompatActivity {
+    private WorkoutLog workoutlog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,10 +28,13 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        DatabaseHelper db = DatabaseHelper.getInstance();
-        ArrayList<Workout> workouts = db.getAllWorkouts();
-        for (Workout workout: workouts) {
-            Log.i("workout", workout.getName());
-        }
+        workoutlog = new WorkoutLog();
+        workoutlog.getWorkoutsAsync(workouts -> {
+            for (Workout workout : workouts) {
+                Log.i("workout", workout.getName());
+            }
+        }, error -> {
+                Log.i("Error", "Something went wrong");
+        });
     }
 }

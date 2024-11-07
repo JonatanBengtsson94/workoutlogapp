@@ -26,8 +26,7 @@ public class Workout {
         }
         return new ArrayList<>(exercisesPerformed);
     }
+
     private void loadExercisesPerformed() {
-        DatabaseHelper db = DatabaseHelper.getInstance();
-        exercisesPerformed = db.getExercisesPerformedByWorkoutId(id);
     }
 }
