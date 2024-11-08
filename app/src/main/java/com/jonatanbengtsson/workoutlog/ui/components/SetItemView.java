@@ -1,4 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog.ui.components;
+package com.jonatanbengtsson.workoutlog.ui.components;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.github.jonatanbengtsson94.workoutlog.R;
+import com.jonatanbengtsson.workoutlog.R;
 
 public class SetItemView extends ConstraintLayout {
 

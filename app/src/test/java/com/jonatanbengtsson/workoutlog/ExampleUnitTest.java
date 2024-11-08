@@ -1,4 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog;
+package com.jonatanbengtsson.workoutlog;
 
 import org.junit.Test;
 

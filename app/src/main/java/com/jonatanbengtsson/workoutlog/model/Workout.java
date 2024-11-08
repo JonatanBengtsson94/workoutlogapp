@@ -1,7 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog.model;
-
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseHelper;
-import com.github.jonatanbengtsson94.workoutlog.ui.activities.WorkoutHistoryActivity;
+package com.jonatanbengtsson.workoutlog.model;
 
 import java.util.ArrayList;
 import java.time.LocalDate;

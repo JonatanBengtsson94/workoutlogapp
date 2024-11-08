@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.github.jonatanbengtsson94.workoutlog"
+    namespace = "com.jonatanbengtsson.workoutlog"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.github.jonatanbengtsson94.workoutlog"
+        applicationId = "com.jonatanbengtsson.workoutlog"
         minSdk = 34
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog.ui.activities;
+package com.jonatanbengtsson.workoutlog.ui.activities;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +9,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.github.jonatanbengtsson94.workoutlog.R;
-import com.github.jonatanbengtsson94.workoutlog.model.Workout;
-import com.github.jonatanbengtsson94.workoutlog.model.WorkoutLog;
-
-import java.util.ArrayList;
+import com.jonatanbengtsson.workoutlog.R;
+import com.jonatanbengtsson.workoutlog.model.Workout;
+import com.jonatanbengtsson.workoutlog.model.WorkoutLog;
 
 public class WorkoutHistoryActivity extends AppCompatActivity {
     private WorkoutLog workoutlog;

@@ -1,7 +1,6 @@
-package com.github.jonatanbengtsson94.workoutlog.model;
+package com.jonatanbengtsson.workoutlog.model;
 
-import com.github.jonatanbengtsson94.workoutlog.App;
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseHelper;
+import com.jonatanbengtsson.workoutlog.database.DatabaseHelper;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;

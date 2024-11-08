@@ -1,4 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog.database;
+package com.jonatanbengtsson.workoutlog.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -8,14 +8,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.github.jonatanbengtsson94.workoutlog.App;
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.WorkoutsTable;
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExercisesPerformedTable;
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.SetsTable;
-import com.github.jonatanbengtsson94.workoutlog.database.DatabaseContract.ExerciseTable;
-import com.github.jonatanbengtsson94.workoutlog.model.ExercisePerformed;
-import com.github.jonatanbengtsson94.workoutlog.model.Set;
-import com.github.jonatanbengtsson94.workoutlog.model.Workout;
+import com.jonatanbengtsson.workoutlog.App;
+import com.jonatanbengtsson.workoutlog.model.ExercisePerformed;
+import com.jonatanbengtsson.workoutlog.model.Set;
+import com.jonatanbengtsson.workoutlog.model.Workout;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -45,35 +41,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_EXERCISE_TABLE = "CREATE TABLE " + ExerciseTable.TABLE_NAME + " ("
-                + ExerciseTable.COLUMN_EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ExerciseTable.COLUMN_EXERCISE_NAME + " TEXT)";
+        String CREATE_EXERCISE_TABLE = "CREATE TABLE " + DatabaseContract.ExerciseTable.TABLE_NAME + " ("
+                + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME + " TEXT)";
         db.execSQL(CREATE_EXERCISE_TABLE);
 
-        String CREATE_WORKOUTS_TABLE = "CREATE TABLE " + WorkoutsTable.TABLE_NAME + " ("
-                + WorkoutsTable.COLUMN_WORKOUT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + WorkoutsTable.COLUMN_WORKOUT_NAME + " TEXT, "
-                + WorkoutsTable.COLUMN_DATE_PERFORMED + " TEXT)";
+        String CREATE_WORKOUTS_TABLE = "CREATE TABLE " + DatabaseContract.WorkoutsTable.TABLE_NAME + " ("
+                + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_NAME + " TEXT, "
+                + DatabaseContract.WorkoutsTable.COLUMN_DATE_PERFORMED + " TEXT)";
         db.execSQL(CREATE_WORKOUTS_TABLE);
 
-        String CREATE_EXERCISES_PERFORMED_TABLE = "CREATE TABLE " + ExercisesPerformedTable.TABLE_NAME + " ("
-                + ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + " INTEGER, "
-                + ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " INTEGER, "
-                + "FOREIGN KEY(" + ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + ") REFERENCES "
-                + WorkoutsTable.TABLE_NAME + "(" + WorkoutsTable.COLUMN_WORKOUT_ID + "), "
-                + "FOREIGN KEY(" + ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + ") REFERENCES "
-                + ExerciseTable.TABLE_NAME + "(" + ExerciseTable.COLUMN_EXERCISE_ID + ")"
+        String CREATE_EXERCISES_PERFORMED_TABLE = "CREATE TABLE " + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + " ("
+                + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + " INTEGER, "
+                + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " INTEGER, "
+                + "FOREIGN KEY(" + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + ") REFERENCES "
+                + DatabaseContract.WorkoutsTable.TABLE_NAME + "(" + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_ID + "), "
+                + "FOREIGN KEY(" + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + ") REFERENCES "
+                + DatabaseContract.ExerciseTable.TABLE_NAME + "(" + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_ID + ")"
                 +");";
         db.execSQL(CREATE_EXERCISES_PERFORMED_TABLE);
 
-        String CREATE_SETS_TABLE = "CREATE TABLE " + SetsTable.TABLE_NAME + " ("
-                + SetsTable.COLUMN_SET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + SetsTable.COLUMN_REPS + " INTEGER, "
-                + SetsTable.COLUMN_WEIGHT + " REAL, "
-                + SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + " INTEGER, "
-                + "FOREIGN KEY(" + SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + ") REFERENCES "
-                + ExercisesPerformedTable.TABLE_NAME + "(" + ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + "))";
+        String CREATE_SETS_TABLE = "CREATE TABLE " + DatabaseContract.SetsTable.TABLE_NAME + " ("
+                + DatabaseContract.SetsTable.COLUMN_SET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                + DatabaseContract.SetsTable.COLUMN_REPS + " INTEGER, "
+                + DatabaseContract.SetsTable.COLUMN_WEIGHT + " REAL, "
+                + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + " INTEGER, "
+                + "FOREIGN KEY(" + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + ") REFERENCES "
+                + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + "(" + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + "))";
         db.execSQL(CREATE_SETS_TABLE);
 
         insertInitialData(db);
@@ -91,10 +87,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE;
         String dateString = datePerformed.format(formatter);
 
-        values.put(WorkoutsTable.COLUMN_WORKOUT_NAME, workoutName);
-        values.put(WorkoutsTable.COLUMN_DATE_PERFORMED, dateString);
+        values.put(DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_NAME, workoutName);
+        values.put(DatabaseContract.WorkoutsTable.COLUMN_DATE_PERFORMED, dateString);
 
-        long workoutId = db.insert(WorkoutsTable.TABLE_NAME, null, values);
+        long workoutId = db.insert(DatabaseContract.WorkoutsTable.TABLE_NAME, null, values);
 
         if (workoutId == -1) {
             throw new RuntimeException("Failed to insert workout");
@@ -107,10 +103,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK, exerciseId);
-        values.put(ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK, workoutId);
+        values.put(DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK, exerciseId);
+        values.put(DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK, workoutId);
 
-        long exercisePerformedId = db.insert(ExercisesPerformedTable.TABLE_NAME, null, values);
+        long exercisePerformedId = db.insert(DatabaseContract.ExercisesPerformedTable.TABLE_NAME, null, values);
 
         if (exercisePerformedId == -1) {
             throw new RuntimeException("Failed to insert exercise");
@@ -123,11 +119,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(SetsTable.COLUMN_REPS, reps);
-        values.put(SetsTable.COLUMN_WEIGHT, weight);
-        values.put(SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK, exercisePerformedId);
+        values.put(DatabaseContract.SetsTable.COLUMN_REPS, reps);
+        values.put(DatabaseContract.SetsTable.COLUMN_WEIGHT, weight);
+        values.put(DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK, exercisePerformedId);
 
-        long setId = db.insert(SetsTable.TABLE_NAME, null, values);
+        long setId = db.insert(DatabaseContract.SetsTable.TABLE_NAME, null, values);
 
         if (setId == -1) {
             throw new RuntimeException("Failed to insert set");
@@ -165,13 +161,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ArrayList<Workout> workouts = new ArrayList<>();
             try {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
-                cursor = db.rawQuery("SELECT * FROM " + WorkoutsTable.TABLE_NAME, null);
+                cursor = db.rawQuery("SELECT * FROM " + DatabaseContract.WorkoutsTable.TABLE_NAME, null);
 
                 if (cursor.moveToFirst()) {
                     do {
-                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_WORKOUT_ID));
-                        String name = cursor.getString(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_WORKOUT_NAME));
-                        String datePerformedString = cursor.getString(cursor.getColumnIndexOrThrow(WorkoutsTable.COLUMN_DATE_PERFORMED));
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_ID));
+                        String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_NAME));
+                        String datePerformedString = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.WorkoutsTable.COLUMN_DATE_PERFORMED));
                         LocalDate datePerformed = LocalDate.parse(datePerformedString, DateTimeFormatter.ISO_LOCAL_DATE);
                         workouts.add(new Workout(id, name, datePerformed));
                     } while (cursor.moveToNext());
@@ -195,14 +191,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             try {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
-                String query =  "SELECT * FROM " + ExercisesPerformedTable.TABLE_NAME + " WHERE " + ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " = ?";
+                String query =  "SELECT * FROM " + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + " WHERE " + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " = ?";
                 String[] selectionArgs = { String.valueOf(workoutId) };
                 cursor = db.rawQuery(query, selectionArgs);
 
                 if (cursor.moveToFirst()) {
                     do {
-                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID));
-                        int exerciseId = cursor.getInt(cursor.getColumnIndexOrThrow(ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK));
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID));
+                        int exerciseId = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK));
                         exercisesPerformed.add(new ExercisePerformed(id, workoutId, exerciseId));
                     } while (cursor.moveToNext());
                 }

@@ -1,4 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog.database;
+package com.jonatanbengtsson.workoutlog.database;
 
 import android.provider.BaseColumns;
 

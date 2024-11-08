@@ -1,4 +1,4 @@
-package com.github.jonatanbengtsson94.workoutlog.model;
+package com.jonatanbengtsson.workoutlog.model;
 
 public class Exercise {
     private int id;
