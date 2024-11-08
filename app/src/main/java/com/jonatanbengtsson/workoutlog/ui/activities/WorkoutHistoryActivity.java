@@ -8,13 +8,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
-import com.jonatanbengtsson.workoutlog.model.Workout;
 import com.jonatanbengtsson.workoutlog.model.WorkoutLog;
+import com.jonatanbengtsson.workoutlog.ui.adapters.WorkoutAdapter;
 
 public class WorkoutHistoryActivity extends AppCompatActivity {
     private WorkoutLog workoutlog;
+    private RecyclerView recyclerView;
+    private WorkoutAdapter workoutAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +30,12 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         workoutlog = new WorkoutLog();
         workoutlog.getWorkoutsAsync(workouts -> {
-            for (Workout workout : workouts) {
-                Log.i("workout", workout.getName());
-            }
+            workoutAdapter = new WorkoutAdapter(workouts);
+            recyclerView.setAdapter(workoutAdapter);
         }, error -> {
                 Log.i("Error", "Something went wrong");
         });
