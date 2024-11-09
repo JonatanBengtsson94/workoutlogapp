@@ -132,6 +132,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return setId;
     }
 
+    /*
     public void addWorkout(Workout workout) {
         DatabaseHelper dbHelper = this;
         executorService.execute(() -> {
@@ -153,6 +154,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         });
     }
+     */
 
     public void getAllWorkouts(Consumer<ArrayList<Workout>> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper dbHelper = this;

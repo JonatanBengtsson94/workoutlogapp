@@ -14,9 +14,15 @@ import java.util.ArrayList;
 
 public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutViewHolder> {
     private ArrayList<Workout> workouts;
+    private OnItemClickListener listener;
 
-    public WorkoutAdapter(ArrayList<Workout> workouts) {
+    public interface OnItemClickListener {
+        void onItemClick(Workout workout);
+    }
+
+    public WorkoutAdapter(ArrayList<Workout> workouts, OnItemClickListener listener) {
         this.workouts = workouts;
+        this.listener = listener;
     }
 
     @Override
@@ -30,6 +36,9 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
         Workout workout = workouts.get(position);
         holder.txtWorkoutName.setText(workout.getName());
         holder.txtWorkoutDate.setText(workout.getDatePerformed().toString());
+        holder.itemView.setOnClickListener(v -> {
+                listener.onItemClick(workout);
+        });
     }
 
     @Override
