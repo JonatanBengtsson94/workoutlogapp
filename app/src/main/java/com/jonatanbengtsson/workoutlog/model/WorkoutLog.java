@@ -18,7 +18,7 @@ public class WorkoutLog {
 
     private void loadWorkouts(Consumer<ArrayList<Workout>> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper.getInstance().getAllWorkouts(workoutsFromDb -> {
-            workouts = new ArrayList<>(workoutsFromDb);
+            workouts = workoutsFromDb;
             onSuccess.accept(workouts);
         }, onError);
     }
