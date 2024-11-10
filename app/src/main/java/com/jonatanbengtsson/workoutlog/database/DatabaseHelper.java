@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 import com.jonatanbengtsson.workoutlog.App;
+import com.jonatanbengtsson.workoutlog.model.Exercise;
 import com.jonatanbengtsson.workoutlog.model.ExercisePerformed;
 import com.jonatanbengtsson.workoutlog.model.Set;
 import com.jonatanbengtsson.workoutlog.model.Workout;
@@ -193,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             try {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
-                String query =  "SELECT * FROM " + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + " WHERE " + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " = ?";
+                String query = "SELECT * FROM " + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + " WHERE " + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " = ?";
                 String[] selectionArgs = { String.valueOf(workoutId) };
                 cursor = db.rawQuery(query, selectionArgs);
 
@@ -212,6 +213,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.close();
                 }
             }
+        });
+    }
+
+    public void getExercise(int exerciseId, Consumer<Exercise> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper dbHelper = this;
+        executorService.submit(() -> {
+            Cursor cursor = null;
+           try {
+              SQLiteDatabase db = dbHelper.getReadableDatabase();
+              String query = "SELECT * FROM " + DatabaseContract.ExerciseTable.TABLE_NAME + " WHERE " + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_ID + " = ?";
+              String[] selectionArgs = { String.valueOf(exerciseId) };
+              cursor = db.rawQuery(query, selectionArgs);
+
+              if (cursor.moveToFirst()) {
+                  do {
+                      int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExerciseTable.COLUMN_EXERCISE_ID));
+                      String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME));
+                      Exercise exercise = new Exercise(id, name);
+                      new Handler(Looper.getMainLooper()).post(() -> onSuccess.accept(exercise));
+                      break;
+                  } while (cursor.moveToNext());
+              }
+           } catch (Exception e) {
+               new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
+           }
         });
     }
 

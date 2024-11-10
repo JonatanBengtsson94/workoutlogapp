@@ -1,6 +1,9 @@
 package com.jonatanbengtsson.workoutlog.model;
 
+import com.jonatanbengtsson.workoutlog.database.DatabaseHelper;
+
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 public class ExercisePerformed {
     private int id;
@@ -15,4 +18,19 @@ public class ExercisePerformed {
     }
     public ArrayList<Set> getSets() { return new ArrayList<>(sets); }
     public int getExerciseId() { return exercise.getId(); }
+
+    public void getExerciseAsync(Consumer<Exercise> onSuccess, Consumer<Exception> onError) {
+        if (exercise == null) {
+            loadExercise(onSuccess, onError);
+        } else {
+            onSuccess.accept(exercise);
+        }
+    }
+
+    private void loadExercise(Consumer<Exercise> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper.getInstance().getExercise(id, exerciseFromDn -> {
+           exercise = exerciseFromDn;
+           onSuccess.accept(exercise);
+        }, onError);
+    }
 }

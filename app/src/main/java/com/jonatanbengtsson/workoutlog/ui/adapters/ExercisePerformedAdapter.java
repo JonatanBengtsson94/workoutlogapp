@@ -28,7 +28,11 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
     @Override
     public void onBindViewHolder(ExercisePerformedViewHolder holder, int position) {
         ExercisePerformed exercisePerformed = exercisesPerformed.get(position);
-        holder.txtExerciseName.setText("test");
+        exercisePerformed.getExerciseAsync(exercise -> {
+            holder.txtExerciseName.setText(exercise.getName());
+        }, e -> {
+            holder.txtExerciseName.setText("Error loading exercise");
+        });
     }
 
     @Override

@@ -58,14 +58,14 @@ public class Workout implements Parcelable {
         if (exercisesPerformed == null) {
             loadExercisesPerformed(onSuccess, onError);
         } else {
-            onSuccess.accept(new ArrayList<>(exercisesPerformed));
+            onSuccess.accept(exercisesPerformed);
         }
     }
 
     private void loadExercisesPerformed(Consumer<ArrayList<ExercisePerformed>> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper.getInstance().getExercisesPerformedByWorkoutId(id, exercisesPerformedFromDb -> {
             exercisesPerformed = exercisesPerformedFromDb;
-            onSuccess.accept(exercisesPerformedFromDb);
+            onSuccess.accept(exercisesPerformed);
         }, onError);
     }
 }
