@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
+import com.jonatanbengtsson.workoutlog.model.Workout;
 import com.jonatanbengtsson.workoutlog.model.WorkoutLog;
 import com.jonatanbengtsson.workoutlog.ui.adapters.WorkoutAdapter;
 
@@ -37,7 +38,7 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
         workoutlog.getWorkoutsAsync(workouts -> {
             workoutAdapter = new WorkoutAdapter(workouts, workout -> {
                 Intent intent = new Intent(this, WorkoutDetailActivity.class);
-                intent.putExtra("id", workout.getId());
+                intent.putExtra("workout", workout);
                 startActivity(intent);
             });
             recyclerView.setAdapter(workoutAdapter);

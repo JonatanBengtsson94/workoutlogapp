@@ -16,7 +16,6 @@ import com.jonatanbengtsson.workoutlog.model.Workout;
 import com.jonatanbengtsson.workoutlog.ui.adapters.ExercisePerformedAdapter;
 
 public class WorkoutDetailActivity extends AppCompatActivity {
-    private Workout workout;
     private RecyclerView recyclerView;
 
     @Override
@@ -30,8 +29,7 @@ public class WorkoutDetailActivity extends AppCompatActivity {
             return insets;
         });
 
-        int workoutId = getIntent().getIntExtra("id", -1);
-        Workout workout = new Workout(workoutId);
+        Workout workout = getIntent().getParcelableExtra("workout", Workout.class);
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
