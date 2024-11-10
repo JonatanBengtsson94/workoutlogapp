@@ -29,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        executorService = Executors.newSingleThreadExecutor();
+        executorService = Executors.newCachedThreadPool();
     }
 
     public static synchronized DatabaseHelper getInstance() {
@@ -238,6 +238,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
            } catch (Exception e) {
                new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
            }
+        });
+    }
+
+    public void getSetsByExercisePerformedId(int exercisePerformedId, Consumer<ArrayList<Set>> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper dbHelper = this;
+        executorService.submit(() -> {
+            Cursor cursor = null;
+            ArrayList<Set> sets = new ArrayList<>();
+            try {
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                String query = "SELECT * FROM " + DatabaseContract.SetsTable.TABLE_NAME + " WHERE " + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK+ " = ?";
+                String[] selectionArgs = { String.valueOf(exercisePerformedId) };
+                cursor = db.rawQuery(query, selectionArgs);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.SetsTable.COLUMN_SET_ID));
+                        int reps = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.SetsTable.COLUMN_REPS));
+                        float weight = cursor.getFloat(cursor.getColumnIndexOrThrow(DatabaseContract.SetsTable.COLUMN_WEIGHT));
+                        sets.add(new Set(id, exercisePerformedId, reps, weight));
+                    } while (cursor.moveToNext());
+                }
+                new Handler(Looper.getMainLooper()).post(() -> onSuccess.accept(sets));
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
+            }
         });
     }
 

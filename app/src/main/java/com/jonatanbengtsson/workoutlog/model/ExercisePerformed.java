@@ -16,7 +16,21 @@ public class ExercisePerformed {
         this.workoutId = workoutId;
         this.exerciseId = exerciseId;
     }
-    public ArrayList<Set> getSets() { return new ArrayList<>(sets); }
+    public void getSetsAsync(Consumer<ArrayList<Set>> onSuccess, Consumer<Exception> onError) {
+        if (sets == null) {
+            loadSets(onSuccess, onError);
+        } else {
+            onSuccess.accept(sets);
+        }
+    }
+
+    private void loadSets(Consumer<ArrayList<Set>> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper.getInstance().getSetsByExercisePerformedId(id, setsFromDb -> {
+            sets = setsFromDb;
+            onSuccess.accept(sets);
+        }, onError);
+    }
+
     public int getExerciseId() { return exercise.getId(); }
 
     public void getExerciseAsync(Consumer<Exercise> onSuccess, Consumer<Exception> onError) {
@@ -28,8 +42,8 @@ public class ExercisePerformed {
     }
 
     private void loadExercise(Consumer<Exercise> onSuccess, Consumer<Exception> onError) {
-        DatabaseHelper.getInstance().getExercise(id, exerciseFromDn -> {
-           exercise = exerciseFromDn;
+        DatabaseHelper.getInstance().getExercise(id, exerciseFromDb -> {
+           exercise = exerciseFromDb;
            onSuccess.accept(exercise);
         }, onError);
     }

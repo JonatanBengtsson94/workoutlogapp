@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
@@ -33,6 +34,15 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
         }, e -> {
             holder.txtExerciseName.setText("Error loading exercise");
         });
+        exercisePerformed.getSetsAsync(sets -> {
+            SetAdapter setAdapter = new SetAdapter(sets);
+            holder.recyclerView.setAdapter(setAdapter);
+            if (holder.recyclerView.getLayoutManager() == null) {
+                holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.recyclerView.getContext()));
+            }
+        }, e -> {
+
+        });
     }
 
     @Override
@@ -42,10 +52,12 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
 
     public static class ExercisePerformedViewHolder extends RecyclerView.ViewHolder {
         TextView txtExerciseName;
+        RecyclerView recyclerView;
 
         public ExercisePerformedViewHolder(View itemView) {
             super(itemView);
             txtExerciseName = itemView.findViewById(R.id.txtExerciseName);
+            recyclerView = itemView.findViewById(R.id.recyclerView);
         }
     }
 }
