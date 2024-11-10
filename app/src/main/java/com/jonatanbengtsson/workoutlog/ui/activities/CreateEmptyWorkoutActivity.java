@@ -1,6 +1,5 @@
 package com.jonatanbengtsson.workoutlog.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
@@ -12,35 +11,19 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.jonatanbengtsson.workoutlog.R;
 
-public class MainActivity extends AppCompatActivity {
+public class CreateEmptyWorkoutActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_create_empty_workout);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        Button btnNewEmptyWorkout = findViewById(R.id.btnNewEmptyWorkout);
-        Button btnNewTemplateWorkout = findViewById(R.id.btnNewTemplateWorkout);
-        Button btnHistory = findViewById(R.id.btnHistory);
-
-        btnNewEmptyWorkout.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CreateEmptyWorkoutActivity.class);
-            startActivity(intent);
-        });
-
-        btnNewTemplateWorkout.setOnClickListener(v -> {
-
-        });
-
-        btnHistory.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, WorkoutHistoryActivity.class);
-            startActivity(intent);
-        });
+        //Button btnAddExercise
     }
 }
