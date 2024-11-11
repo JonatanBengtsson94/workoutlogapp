@@ -186,6 +186,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         });
     }
 
+    public void getAllExercises(Consumer<ArrayList<Exercise>> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper dbHelper = this;
+        executorService.submit(() -> {
+            Cursor cursor = null;
+            ArrayList<Exercise> exercises = new ArrayList<>();
+            try {
+                SQLiteDatabase db = dbHelper.getReadableDatabase();
+                cursor = db.rawQuery("SELECT * FROM " + DatabaseContract.ExerciseTable.TABLE_NAME, null);
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        int id = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.ExerciseTable.COLUMN_EXERCISE_ID));
+                        String name = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME));
+                        exercises.add(new Exercise(id, name));
+                    } while (cursor.moveToNext());
+                }
+                new Handler(Looper.getMainLooper()).post(() -> onSuccess.accept(exercises));
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
+                }
+            }
+        });
+    }
+
     public void getExercisesPerformedByWorkoutId(int workoutId, Consumer<ArrayList<ExercisePerformed>> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper dbHelper = this;
         executorService.submit(() -> {
