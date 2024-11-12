@@ -20,6 +20,12 @@ public class Workout implements Parcelable {
         this.datePerformed = datePerformed;
     }
 
+    public Workout(String name, LocalDate datePerformed) {
+       this.name = name;
+       this.datePerformed = datePerformed;
+       this.exercisesPerformed = new ArrayList<>();
+    }
+
     Workout(Parcel in) {
         id = in.readInt();
         name = in.readString();
@@ -60,6 +66,11 @@ public class Workout implements Parcelable {
         } else {
             onSuccess.accept(exercisesPerformed);
         }
+    }
+
+    public int addExercisePerformed(ExercisePerformed exercisePerformed) {
+        exercisesPerformed.add(exercisePerformed);
+        return exercisesPerformed.size() - 1;
     }
 
     private void loadExercisesPerformed(Consumer<ArrayList<ExercisePerformed>> onSuccess, Consumer<Exception> onError) {

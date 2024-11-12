@@ -11,11 +11,23 @@ public class ExercisePerformed {
     private int exerciseId;
     private Exercise exercise;
     private ArrayList<Set> sets;
+
     public ExercisePerformed(int id, int workoutId, int exerciseId) {
         this.id = id;
         this.workoutId = workoutId;
         this.exerciseId = exerciseId;
     }
+
+    public ExercisePerformed(Exercise exercise) {
+        this.exercise = exercise;
+        this.sets = new ArrayList<>();
+        sets.add(new Set());
+    }
+
+    public void addSet(Set set) {
+        sets.add(set);
+    }
+
     public void getSetsAsync(Consumer<ArrayList<Set>> onSuccess, Consumer<Exception> onError) {
         if (sets == null) {
             loadSets(onSuccess, onError);

@@ -4,6 +4,7 @@ package com.jonatanbengtsson.workoutlog.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,26 +17,45 @@ import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
+public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.getDefault()));
-
     private ArrayList<Set> sets;
+    private boolean isEditMode;
 
-    public SetAdapter(ArrayList<Set> sets) {
+    public SetAdapter(ArrayList<Set> sets, boolean isEditMode) {
         this.sets = sets;
+        this.isEditMode = isEditMode;
+    }
+
+    public int getItemViewType(int position) {
+        return isEditMode ? 1 : 2;
     }
 
     @Override
-    public SetViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_set, parent, false);
-        return new SetViewHolder(itemView);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        if (viewType == 1) {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_edit_set, parent, false);
+            return new SetEditViewHolder(itemView);
+        } else {
+            View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_set, parent, false);
+            return new SetReadViewHolder(itemView);
+        }
     }
 
     @Override
-    public void onBindViewHolder(SetViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         Set set = sets.get(position);
-        holder.txtReps.setText(String.valueOf(set.getReps()));
-        holder.txtWeight.setText(decimalFormat.format(set.getWeight()));
+
+        if (holder instanceof SetReadViewHolder) {
+            SetReadViewHolder readHolder = (SetReadViewHolder) holder;
+            readHolder.txtReps.setText(String.valueOf(set.getReps()));
+            readHolder.txtWeight.setText(decimalFormat.format(set.getWeight()));
+        }
+        else if (holder instanceof SetEditViewHolder) {
+            SetEditViewHolder editHolder = (SetEditViewHolder) holder;
+            editHolder.editReps.setText(String.valueOf(set.getReps()));
+            editHolder.editWeight.setText(decimalFormat.format(set.getWeight()));
+        }
     }
 
     @Override
@@ -43,13 +63,24 @@ public class SetAdapter extends RecyclerView.Adapter<SetAdapter.SetViewHolder> {
         return sets.size();
     }
 
-    public static class SetViewHolder extends RecyclerView.ViewHolder {
+    public static class SetReadViewHolder extends RecyclerView.ViewHolder {
         TextView txtReps, txtWeight;
 
-        public SetViewHolder(View itemView) {
+        public SetReadViewHolder(View itemView) {
             super(itemView);
             txtReps = itemView.findViewById(R.id.txtReps);
             txtWeight = itemView.findViewById(R.id.txtWeight);
         }
     }
+
+    public static class SetEditViewHolder extends RecyclerView.ViewHolder {
+        EditText editReps, editWeight;
+
+        public SetEditViewHolder(View itemView) {
+            super(itemView);
+            editReps = itemView.findViewById(R.id.editReps);
+            editWeight = itemView.findViewById(R.id.editWeight);
+        }
+    }
+
 }

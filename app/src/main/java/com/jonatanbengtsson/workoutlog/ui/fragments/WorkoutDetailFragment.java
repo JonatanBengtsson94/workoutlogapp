@@ -40,7 +40,7 @@ public class WorkoutDetailFragment extends DialogFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         workout.getExercisesPerformedAsync(exercisesPerformed -> {
-            ExercisePerformedAdapter exerciseAdapter = new ExercisePerformedAdapter(exercisesPerformed);
+            ExercisePerformedAdapter exerciseAdapter = new ExercisePerformedAdapter(exercisesPerformed, false);
             recyclerView.setAdapter(exerciseAdapter);
         }, error -> {
             Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
