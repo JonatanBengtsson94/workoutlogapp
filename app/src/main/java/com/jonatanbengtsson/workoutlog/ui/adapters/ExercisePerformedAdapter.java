@@ -19,10 +19,6 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
     private ArrayList<ExercisePerformed> exercisesPerformed;
     private boolean isEditMode;
 
-    public interface OnButtonClickListener {
-        void onButtonClick(Button button);
-    }
-
     public ExercisePerformedAdapter(ArrayList<ExercisePerformed> exercisesPerformed, boolean isEditMode) {
         this.exercisesPerformed = exercisesPerformed;
         this.isEditMode = isEditMode;

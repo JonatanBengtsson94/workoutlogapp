@@ -68,9 +68,18 @@ public class Workout implements Parcelable {
         }
     }
 
+    public void setName(String name) { this.name = name; }
+
     public int addExercisePerformed(ExercisePerformed exercisePerformed) {
         exercisesPerformed.add(exercisePerformed);
         return exercisesPerformed.size() - 1;
+    }
+
+    public void saveToDatabaseAsync(Consumer<Long> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper.getInstance().addWorkout(this, workoutId -> {
+            this.id = (int) workoutId.longValue();
+            onSuccess.accept(workoutId);
+        }, onError);
     }
 
     private void loadExercisesPerformed(Consumer<ArrayList<ExercisePerformed>> onSuccess, Consumer<Exception> onError) {

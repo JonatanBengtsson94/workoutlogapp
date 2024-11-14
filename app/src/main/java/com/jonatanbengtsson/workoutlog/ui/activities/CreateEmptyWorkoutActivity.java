@@ -27,6 +27,8 @@ public class CreateEmptyWorkoutActivity extends AppCompatActivity {
     private WorkoutLog workoutLog;
     private Workout workout;
     private RecyclerView recyclerView;
+    private Button btnAddExercise, btnSaveWorkout;
+    private EditText editWorkoutName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +44,12 @@ public class CreateEmptyWorkoutActivity extends AppCompatActivity {
         workoutLog = new WorkoutLog();
         workout = new Workout("Unnamed workout", LocalDate.now());
 
-        Button btnAddExercise = findViewById(R.id.btnAddExercise);
-        EditText editWorkoutName = findViewById(R.id.editWorkoutName);
+        btnSaveWorkout = findViewById(R.id.btnSaveWorkout);
+        btnSaveWorkout.setOnClickListener(v -> {
+            handleSaveWorkoutClick();
+        });
+        btnAddExercise = findViewById(R.id.btnAddExercise);
+        editWorkoutName = findViewById(R.id.editWorkoutName);
         editWorkoutName.setText(workout.getName());
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -72,5 +78,14 @@ public class CreateEmptyWorkoutActivity extends AppCompatActivity {
         ExercisePerformed exercisePerformed = new ExercisePerformed(exercise);
         int position = workout.addExercisePerformed(exercisePerformed);
         recyclerView.getAdapter().notifyItemInserted(position);
+    }
+
+    private void handleSaveWorkoutClick() {
+        workout.setName(editWorkoutName.getText().toString());
+        workout.saveToDatabaseAsync(onSuccess -> {
+            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+        }, onError -> {
+            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+        });
     }
 }

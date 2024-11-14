@@ -11,6 +11,7 @@
         android:id="@+id/editWorkoutName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:inputType="text"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"

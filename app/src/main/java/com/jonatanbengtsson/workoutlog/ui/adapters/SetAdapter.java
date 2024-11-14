@@ -1,6 +1,8 @@
 package com.jonatanbengtsson.workoutlog.ui.adapters;
 
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,36 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             SetEditViewHolder editHolder = (SetEditViewHolder) holder;
             editHolder.editReps.setText(String.valueOf(set.getReps()));
             editHolder.editWeight.setText(decimalFormat.format(set.getWeight()));
+            editHolder.editReps.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() > 0) {
+                        int reps = Integer.parseInt(s.toString());
+                        set.setReps(reps);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
+            editHolder.editWeight.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    if (s.length() > 0) {
+                        float weight = Float.parseFloat(s.toString());
+                        set.setWeight(weight);
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {}
+            });
         }
     }
 

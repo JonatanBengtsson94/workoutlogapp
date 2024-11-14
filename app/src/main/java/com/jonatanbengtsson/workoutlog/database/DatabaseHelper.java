@@ -133,29 +133,40 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return setId;
     }
 
-    /*
-    public void addWorkout(Workout workout) {
+    public void addWorkout(Workout workout, Consumer<Long> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper dbHelper = this;
         executorService.execute(() -> {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
             db.beginTransaction();
             try {
                 long workoutId = insertWorkout(workout.getName(), workout.getDatePerformed());
-                for (ExercisePerformed exercisePerformed: workout.getExercisesPerformed()) {
-                    long exercisePerformedId = insertExercisePerformed(exercisePerformed.getExerciseId(), workoutId);
-                    for (Set set: exercisePerformed.getSets()) {
-                        long setId = insertSet(set.getReps(), set.getWeight(), exercisePerformedId);
-                    }
-                }
-                db.setTransactionSuccessful();
+                workout.getExercisesPerformedAsync(exercisesPerformed -> {
+                   for (ExercisePerformed exercisePerformed: exercisesPerformed) {
+                       try {
+                           long exercisePerformedId = insertExercisePerformed(exercisePerformed.getExerciseId(), workoutId);
+                           exercisePerformed.getSetsAsync(sets -> {
+                               for (Set set: sets) {
+                                   insertSet(set.getReps(), set.getWeight(), exercisePerformedId);
+                               }
+                               db.setTransactionSuccessful();
+                               new Handler(Looper.getMainLooper()).post(() -> onSuccess.accept(workoutId));
+                           }, e -> {
+                               new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
+                           });
+                       } catch (Exception e) {
+                           new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
+                       }
+                   }
+                }, e -> {
+                    new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
+                });
             } catch (Exception e) {
-                e.printStackTrace();
+                new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
             } finally {
                 db.endTransaction();
             }
         });
     }
-     */
 
     public void getAllWorkouts(Consumer<ArrayList<Workout>> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper dbHelper = this;
