@@ -17,9 +17,6 @@
             android:name=".ui.activities.CreateEmptyWorkoutActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.WorkoutDetailActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activities.WorkoutHistoryActivity"
             android:exported="false" />
         <activity
