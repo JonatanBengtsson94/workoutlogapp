@@ -2,6 +2,7 @@ package com.jonatanbengtsson.workoutlog.ui.activities;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -42,6 +43,8 @@ public class CreateEmptyWorkoutActivity extends AppCompatActivity {
         workout = new Workout("Unnamed workout", LocalDate.now());
 
         Button btnAddExercise = findViewById(R.id.btnAddExercise);
+        EditText editWorkoutName = findViewById(R.id.editWorkoutName);
+        editWorkoutName.setText(workout.getName());
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
