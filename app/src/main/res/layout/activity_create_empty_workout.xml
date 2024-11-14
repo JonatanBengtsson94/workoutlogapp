@@ -30,10 +30,21 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Save workout"
-        app:layout_constraintWidth_percent="0.5"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddExercise"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintTop_toBottomOf="@id/btnAddExercise"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btnCancelWorkout" />
+
+    <Button
+        android:id="@+id/btnCancelWorkout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        app:layout_constraintWidth_percent="0.4"
+        app:layout_constraintTop_toTopOf="@id/btnSaveWorkout"
+        app:layout_constraintBottom_toBottomOf="@id/btnSaveWorkout"
+        app:layout_constraintStart_toEndOf="@id/btnSaveWorkout"
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
