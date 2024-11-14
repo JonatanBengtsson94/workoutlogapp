@@ -11,12 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
 import com.jonatanbengtsson.workoutlog.model.ExercisePerformed;
+import com.jonatanbengtsson.workoutlog.model.Set;
 
 import java.util.ArrayList;
 
 public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerformedAdapter.ExercisePerformedViewHolder> {
     private ArrayList<ExercisePerformed> exercisesPerformed;
     private boolean isEditMode;
+
+    public interface OnButtonClickListener {
+        void onButtonClick(Button button);
+    }
 
     public ExercisePerformedAdapter(ArrayList<ExercisePerformed> exercisesPerformed, boolean isEditMode) {
         this.exercisesPerformed = exercisesPerformed;
@@ -35,6 +40,13 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
         if (!isEditMode) {
             holder.btnRemoveExercise.setVisibility(View.GONE);
             holder.btnAddSet.setVisibility(View.GONE);
+        } else {
+            holder.btnAddSet.setOnClickListener(v -> {
+                handleAddSetClick(position);
+            });
+            holder.btnRemoveExercise.setOnClickListener(v -> {
+                handleRemoveExerciseClick(position);
+            });
         }
         exercisePerformed.getExerciseAsync(exercise -> {
             holder.txtExerciseName.setText(exercise.getName());
@@ -51,6 +63,18 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
 
             });
         }
+
+    private void handleAddSetClick(int position) {
+        ExercisePerformed exercisePerformed = exercisesPerformed.get(position);
+        exercisePerformed.addSet(new Set());
+        notifyItemChanged(position);
+    }
+
+    private void handleRemoveExerciseClick(int position) {
+        ExercisePerformed exercisePerformed = exercisesPerformed.get(position);
+        exercisesPerformed.remove(exercisePerformed);
+        notifyItemRemoved(position);
+    }
 
     @Override
     public int getItemCount() {

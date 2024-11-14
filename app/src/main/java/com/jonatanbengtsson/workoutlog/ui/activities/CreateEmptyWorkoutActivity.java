@@ -56,7 +56,6 @@ public class CreateEmptyWorkoutActivity extends AppCompatActivity {
             btnAddExercise.setOnClickListener(v -> {
                 ExercisesFragment fragment = ExercisesFragment.newInstance(exercises);
                 fragment.setOnExerciseSelectedListener(exercise -> {
-                    Toast.makeText(this, "Exercise: " + exercise.getName(), Toast.LENGTH_SHORT).show();
                     addExercisePerformed(exercise);
                 });
                 fragment.show(getSupportFragmentManager(), "Exercises");
