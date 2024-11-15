@@ -1,6 +1,8 @@
 package com.jonatanbengtsson.workoutlog.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -20,6 +22,7 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
     private WorkoutLog workoutlog;
     private RecyclerView recyclerView;
     private WorkoutAdapter workoutAdapter;
+    private Button btnNewEmptyWorkout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +34,16 @@ public class WorkoutHistoryActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        btnNewEmptyWorkout = findViewById(R.id.btnNewEmptyWorkout);
+        btnNewEmptyWorkout.setOnClickListener(v -> {
+            Intent intent = new Intent(WorkoutHistoryActivity.this, CreateWorkoutActivity.class);
+            startActivity(intent);
+        });
+
         workoutlog = new WorkoutLog();
         workoutlog.getWorkoutsAsync(workouts -> {
             workoutAdapter = new WorkoutAdapter(workouts, workout -> {
