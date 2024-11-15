@@ -1,5 +1,6 @@
 package com.jonatanbengtsson.workoutlog.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,8 +42,12 @@ public class CreateEmptyWorkoutActivity extends AppCompatActivity {
             return insets;
         });
 
+        Intent intent = getIntent();
+        workout = intent.getParcelableExtra("workout", Workout.class);
+        if (workout == null) {
+            workout = new Workout("Unnamed workout", LocalDate.now());
+        }
         workoutLog = new WorkoutLog();
-        workout = new Workout("Unnamed workout", LocalDate.now());
 
         btnSaveWorkout = findViewById(R.id.btnSaveWorkout);
         btnSaveWorkout.setOnClickListener(v -> {

@@ -46,6 +46,7 @@ public class WorkoutDetailFragment extends DialogFragment {
         btnPerformAgain = rootView.findViewById(R.id.btnPerformAgain);
         btnPerformAgain.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), CreateEmptyWorkoutActivity.class);
+            intent.putExtra("workout", workout);
             startActivity(intent);
         });
 
