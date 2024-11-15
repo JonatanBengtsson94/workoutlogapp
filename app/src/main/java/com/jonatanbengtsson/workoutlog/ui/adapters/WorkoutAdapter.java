@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
 import com.jonatanbengtsson.workoutlog.model.Workout;
+import com.jonatanbengtsson.workoutlog.utils.DateUtil;
 
 import java.util.ArrayList;
 
@@ -35,7 +36,7 @@ public class WorkoutAdapter extends RecyclerView.Adapter<WorkoutAdapter.WorkoutV
     public void onBindViewHolder(WorkoutViewHolder holder, int position) {
         Workout workout = workouts.get(position);
         holder.txtWorkoutName.setText(workout.getName());
-        holder.txtWorkoutDate.setText(workout.getDatePerformed().toString());
+        holder.txtWorkoutDate.setText(DateUtil.getFormattedDate(workout.getDatePerformed()));
         holder.itemView.setOnClickListener(v -> {
                 listener.onItemClick(workout);
         });
