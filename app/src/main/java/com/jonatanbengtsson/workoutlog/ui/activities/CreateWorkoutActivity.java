@@ -24,7 +24,7 @@ import com.jonatanbengtsson.workoutlog.ui.fragments.ExercisesFragment;
 
 import java.time.LocalDate;
 
-public class CreateEmptyWorkoutActivity extends AppCompatActivity {
+public class CreateWorkoutActivity extends AppCompatActivity {
     private WorkoutLog workoutLog;
     private Workout workout;
     private RecyclerView recyclerView;

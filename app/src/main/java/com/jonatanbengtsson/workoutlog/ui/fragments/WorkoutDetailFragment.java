@@ -1,7 +1,6 @@
 package com.jonatanbengtsson.workoutlog.ui.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
 import com.jonatanbengtsson.workoutlog.model.Workout;
-import com.jonatanbengtsson.workoutlog.ui.activities.CreateEmptyWorkoutActivity;
+import com.jonatanbengtsson.workoutlog.ui.activities.CreateWorkoutActivity;
 import com.jonatanbengtsson.workoutlog.ui.adapters.ExercisePerformedAdapter;
 
 public class WorkoutDetailFragment extends DialogFragment {
@@ -45,7 +43,7 @@ public class WorkoutDetailFragment extends DialogFragment {
 
         btnPerformAgain = rootView.findViewById(R.id.btnPerformAgain);
         btnPerformAgain.setOnClickListener(v -> {
-            Intent intent = new Intent(getActivity(), CreateEmptyWorkoutActivity.class);
+            Intent intent = new Intent(getActivity(), CreateWorkoutActivity.class);
             intent.putExtra("workout", workout);
             startActivity(intent);
         });

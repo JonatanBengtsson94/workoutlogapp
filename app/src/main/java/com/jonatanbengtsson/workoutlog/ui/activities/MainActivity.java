@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         Button btnHistory = findViewById(R.id.btnHistory);
 
         btnNewEmptyWorkout.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, CreateEmptyWorkoutActivity.class);
+            Intent intent = new Intent(MainActivity.this, CreateWorkoutActivity.class);
             startActivity(intent);
         });
 
