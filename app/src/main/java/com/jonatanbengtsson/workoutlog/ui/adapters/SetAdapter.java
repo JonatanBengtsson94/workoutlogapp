@@ -21,15 +21,18 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static DecimalFormat decimalFormat = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.getDefault()));
     private ArrayList<Set> sets;
     private boolean isEditMode;
+    private Consumer<Boolean> onCheckboxChanged;
 
-    public SetAdapter(ArrayList<Set> sets, boolean isEditMode) {
+    public SetAdapter(ArrayList<Set> sets, boolean isEditMode, Consumer<Boolean> onCheckboxChanged) {
         this.sets = sets;
         this.isEditMode = isEditMode;
+        this.onCheckboxChanged = onCheckboxChanged;
     }
 
     public int getItemViewType(int position) {
@@ -92,12 +95,14 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             });
 
             editHolder.checkbox.setOnCheckedChangeListener((v, isChecked) -> {
+                set.setIsCompleted(isChecked);
                 if (isChecked) {
                     int color = ContextCompat.getColor(editHolder.itemView.getContext(), R.color.acceptColor);
                     editHolder.itemView.setBackgroundColor(color);
                 } else {
                     editHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
                 }
+                onCheckboxChanged.accept(areAllSetsCompleted());
             });
         }
     }
@@ -105,6 +110,15 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemCount() {
         return sets.size();
+    }
+
+    private boolean areAllSetsCompleted() {
+        for (Set set: sets) {
+            if (!set.getIsCompleted()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static class SetReadViewHolder extends RecyclerView.ViewHolder {

@@ -5,6 +5,7 @@ public class Set {
     private int exercisePerformedId;
     private int reps;
     private float weight;
+    private boolean isCompleted = false;
 
     public Set(int id, int exercisePerformedId, int reps, float weight) {
         this.id = id;
@@ -25,6 +26,12 @@ public class Set {
     public float getWeight() {
         return weight;
     }
+
+    public boolean getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(boolean isCompleted) { this.isCompleted = isCompleted; }
 
     public void setWeight(float weight) {
         this.weight = weight;

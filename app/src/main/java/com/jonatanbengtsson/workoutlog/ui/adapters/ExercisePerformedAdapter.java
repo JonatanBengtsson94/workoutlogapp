@@ -1,11 +1,13 @@
 package com.jonatanbengtsson.workoutlog.ui.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,7 +52,14 @@ public class ExercisePerformedAdapter extends RecyclerView.Adapter<ExercisePerfo
             holder.txtExerciseName.setText("Error loading exercise");
         });
         exercisePerformed.getSetsAsync(sets -> {
-            SetAdapter setAdapter = new SetAdapter(sets, isEditMode);
+            SetAdapter setAdapter = new SetAdapter(sets, isEditMode, allCompleted -> {
+                if (allCompleted) {
+                    int color = ContextCompat.getColor(holder.itemView.getContext(), R.color.acceptColor);
+                    holder.itemView.setBackgroundColor(color);
+                } else {
+                    holder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                }
+            });
             holder.recyclerView.setAdapter(setAdapter);
             if (holder.recyclerView.getLayoutManager() == null) {
                 holder.recyclerView.setLayoutManager(new LinearLayoutManager(holder.recyclerView.getContext()));
