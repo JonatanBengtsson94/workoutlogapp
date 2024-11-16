@@ -1,9 +1,11 @@
 package com.jonatanbengtsson.workoutlog.ui.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,7 +30,7 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     private WorkoutLog workoutLog;
     private Workout workout;
     private RecyclerView recyclerView;
-    private Button btnAddExercise, btnSaveWorkout;
+    private Button btnAddExercise, btnSaveWorkout, btnCancelWorkout;
     private EditText editWorkoutName;
 
     @Override
@@ -52,6 +54,11 @@ public class CreateWorkoutActivity extends AppCompatActivity {
         btnSaveWorkout = findViewById(R.id.btnSaveWorkout);
         btnSaveWorkout.setOnClickListener(v -> {
             handleSaveWorkoutClick();
+        });
+
+        btnCancelWorkout = findViewById(R.id.btnCancelWorkout);
+        btnCancelWorkout.setOnClickListener(v -> {
+            handleCancelWorkoutClick();
         });
         btnAddExercise = findViewById(R.id.btnAddExercise);
         editWorkoutName = findViewById(R.id.editWorkoutName);
@@ -95,4 +102,19 @@ public class CreateWorkoutActivity extends AppCompatActivity {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         });
     }
+
+    private void handleCancelWorkoutClick() {
+        new AlertDialog.Builder(this)
+                .setTitle("Cancel workout")
+                .setMessage("Are you sure you want to cancel this workout?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    Intent intent = new Intent(CreateWorkoutActivity.this, WorkoutHistoryActivity.class);
+                    startActivity(intent);
+                })
+                .setNegativeButton("No", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
+
 }
