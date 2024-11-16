@@ -44,19 +44,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_EXERCISE_TABLE = "CREATE TABLE " + DatabaseContract.ExerciseTable.TABLE_NAME + " ("
                 + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME + " TEXT)";
+                + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME + " TEXT UNIQUE NOT NULL)";
         db.execSQL(CREATE_EXERCISE_TABLE);
 
         String CREATE_WORKOUTS_TABLE = "CREATE TABLE " + DatabaseContract.WorkoutsTable.TABLE_NAME + " ("
                 + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_NAME + " TEXT, "
-                + DatabaseContract.WorkoutsTable.COLUMN_DATE_PERFORMED + " TEXT)";
+                + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_NAME + " TEXT NOT NULL, "
+                + DatabaseContract.WorkoutsTable.COLUMN_DATE_PERFORMED + " TEXT NOT NULL)";
         db.execSQL(CREATE_WORKOUTS_TABLE);
 
         String CREATE_EXERCISES_PERFORMED_TABLE = "CREATE TABLE " + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + " ("
                 + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + " INTEGER, "
-                + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " INTEGER, "
+                + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + " INTEGER NOT NULL, "
+                + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + " INTEGER NOT NULL, "
                 + "FOREIGN KEY(" + DatabaseContract.ExercisesPerformedTable.COLUMN_WORKOUT_ID_FK + ") REFERENCES "
                 + DatabaseContract.WorkoutsTable.TABLE_NAME + "(" + DatabaseContract.WorkoutsTable.COLUMN_WORKOUT_ID + "), "
                 + "FOREIGN KEY(" + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_ID_FK + ") REFERENCES "
@@ -66,9 +66,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String CREATE_SETS_TABLE = "CREATE TABLE " + DatabaseContract.SetsTable.TABLE_NAME + " ("
                 + DatabaseContract.SetsTable.COLUMN_SET_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                + DatabaseContract.SetsTable.COLUMN_REPS + " INTEGER, "
-                + DatabaseContract.SetsTable.COLUMN_WEIGHT + " REAL, "
-                + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + " INTEGER, "
+                + DatabaseContract.SetsTable.COLUMN_REPS + " INTEGER NOT NULL, "
+                + DatabaseContract.SetsTable.COLUMN_WEIGHT + " REAL NOT NULL, "
+                + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + " INTEGER NOT NULL, "
                 + "FOREIGN KEY(" + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + ") REFERENCES "
                 + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + "(" + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + "))";
         db.execSQL(CREATE_SETS_TABLE);
