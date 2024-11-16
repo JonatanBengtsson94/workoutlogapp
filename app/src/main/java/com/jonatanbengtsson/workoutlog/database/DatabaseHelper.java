@@ -72,8 +72,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + ") REFERENCES "
                 + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + "(" + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + "))";
         db.execSQL(CREATE_SETS_TABLE);
-
-        insertInitialData(db);
     }
 
     @Override
@@ -331,25 +329,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
             }
         });
-    }
-
-    private void insertInitialData(SQLiteDatabase db) {
-        // Insert exercises
-        db.execSQL("INSERT INTO exercises (exercise_name) VALUES ('Bench Press')");
-        db.execSQL("INSERT INTO exercises (exercise_name) VALUES ('Squat')");
-        db.execSQL("INSERT INTO exercises (exercise_name) VALUES ('Deadlift')");
-
-        // Insert template workout
-        db.execSQL("INSERT INTO workouts (workout_name, date_performed) VALUES ('Template Workout', '2024-10-04')");
-
-        // Insert completed exercises
-        db.execSQL("INSERT INTO exercises_performed (exercise_id_fk, workout_id_fk) VALUES (1 , 1)");
-        db.execSQL("INSERT INTO exercises_performed (exercise_id_fk, workout_id_fk) VALUES (2 , 1)");
-
-        // Insert completed sets
-        db.execSQL("INSERT INTO sets (reps, weight, exercise_performed_id_fk) VALUES (10, 100, 1)");
-        db.execSQL("INSERT INTO sets (reps, weight, exercise_performed_id_fk) VALUES (10, 100, 1)");
-        db.execSQL("INSERT INTO sets (reps, weight, exercise_performed_id_fk) VALUES (5, 140, 2)");
-        db.execSQL("INSERT INTO sets (reps, weight, exercise_performed_id_fk) VALUES (3, 130, 2)");
     }
 }
