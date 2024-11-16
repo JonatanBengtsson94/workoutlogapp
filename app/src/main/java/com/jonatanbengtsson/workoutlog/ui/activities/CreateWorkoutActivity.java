@@ -88,7 +88,9 @@ public class CreateWorkoutActivity extends AppCompatActivity {
     private void handleSaveWorkoutClick() {
         workout.setName(editWorkoutName.getText().toString());
         workout.saveToDatabaseAsync(onSuccess -> {
-            Toast.makeText(this, "Success", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Workout saved", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(CreateWorkoutActivity.this, WorkoutHistoryActivity.class);
+            startActivity(intent);
         }, onError -> {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         });
