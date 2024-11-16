@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
-        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintBottom_toTopOf="@id/txtReps"
         app:layout_constraintEnd_toStartOf="@id/btnRemoveExercise"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +22,28 @@
         app:layout_constraintTop_toTopOf="@id/txtExerciseName"
         app:layout_constraintBottom_toBottomOf="@id/txtExerciseName"
         app:layout_constraintStart_toEndOf="@id/txtExerciseName"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/txtReps"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Reps"
+        app:layout_constraintWidth_percent="0.25"
+        app:layout_constraintTop_toBottomOf="@id/txtExerciseName"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txtWeight" />
+
+    <TextView
+        android:id="@+id/txtWeight"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Weight"
+        app:layout_constraintWidth_percent="0.25"
+        app:layout_constraintTop_toBottomOf="@id/txtExerciseName"
+        app:layout_constraintBottom_toTopOf="@id/recyclerView"
+        app:layout_constraintStart_toEndOf="@id/txtReps"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
