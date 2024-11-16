@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -104,6 +105,11 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 }
                 onCheckboxChanged.accept(areAllSetsCompleted());
             });
+
+            editHolder.btnDeleteSet.setOnClickListener(v -> {
+                sets.remove(set);
+                notifyItemRemoved(position);
+            });
         }
     }
 
@@ -134,12 +140,14 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class SetEditViewHolder extends RecyclerView.ViewHolder {
         EditText editReps, editWeight;
         CheckBox checkbox;
+        ImageButton btnDeleteSet;
 
         public SetEditViewHolder(View itemView) {
             super(itemView);
             editReps = itemView.findViewById(R.id.editReps);
             editWeight = itemView.findViewById(R.id.editWeight);
             checkbox = itemView.findViewById(R.id.checkbox);
+            btnDeleteSet = itemView.findViewById(R.id.btnDeleteSet);
         }
     }
 
