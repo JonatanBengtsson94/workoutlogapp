@@ -175,7 +175,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             ArrayList<Workout> workouts = new ArrayList<>();
             try {
                 SQLiteDatabase db = dbHelper.getReadableDatabase();
-                cursor = db.rawQuery("SELECT * FROM " + DatabaseContract.WorkoutsTable.TABLE_NAME, null);
+                cursor = db.rawQuery("SELECT * FROM " + DatabaseContract.WorkoutsTable.TABLE_NAME + " ORDER BY 1 DESC", null);
 
                 if (cursor.moveToFirst()) {
                     do {
