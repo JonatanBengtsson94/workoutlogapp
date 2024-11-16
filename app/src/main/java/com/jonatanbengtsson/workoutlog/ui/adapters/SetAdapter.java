@@ -1,14 +1,17 @@
 package com.jonatanbengtsson.workoutlog.ui.adapters;
 
 
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jonatanbengtsson.workoutlog.R;
@@ -87,6 +90,15 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 @Override
                 public void afterTextChanged(Editable s) {}
             });
+
+            editHolder.checkbox.setOnCheckedChangeListener((v, isChecked) -> {
+                if (isChecked) {
+                    int color = ContextCompat.getColor(editHolder.itemView.getContext(), R.color.acceptColor);
+                    editHolder.itemView.setBackgroundColor(color);
+                } else {
+                    editHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
+                }
+            });
         }
     }
 
@@ -107,11 +119,13 @@ public class SetAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static class SetEditViewHolder extends RecyclerView.ViewHolder {
         EditText editReps, editWeight;
+        CheckBox checkbox;
 
         public SetEditViewHolder(View itemView) {
             super(itemView);
             editReps = itemView.findViewById(R.id.editReps);
             editWeight = itemView.findViewById(R.id.editWeight);
+            checkbox = itemView.findViewById(R.id.checkbox);
         }
     }
 
