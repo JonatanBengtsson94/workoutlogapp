@@ -3,11 +3,20 @@ package com.jonatanbengtsson.workoutlog.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.jonatanbengtsson.workoutlog.database.DatabaseHelper;
+
+import java.util.function.Consumer;
+
 public class Exercise implements Parcelable {
     private int id;
     private String name;
+
     public Exercise(int id, String name) {
         this.id = id;
+        this.name = name;
+    }
+
+    public Exercise(String name) {
         this.name = name;
     }
 
@@ -38,4 +47,11 @@ public class Exercise implements Parcelable {
 
     public int getId() { return id; }
     public String getName() { return name; }
+
+    public void saveToDatabaseAsync(Consumer<Long> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper.getInstance().addExercise(this, exerciseId -> {
+            this.id = (int) exerciseId.longValue();
+            onSuccess.accept(exerciseId);
+        }, onError);
+    }
 }

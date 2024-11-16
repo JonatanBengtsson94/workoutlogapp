@@ -133,6 +133,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return setId;
     }
 
+    private long insertExercise(String exerciseName) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME, exerciseName);
+
+        long exerciseId = db.insert(DatabaseContract.ExerciseTable.TABLE_NAME, null, values);
+
+        if (exerciseId == -1) {
+            throw new RuntimeException("Failed to insert exercise");
+        }
+
+        return exerciseId;
+    }
+
     public void addWorkout(Workout workout, Consumer<Long> onSuccess, Consumer<Exception> onError) {
         DatabaseHelper dbHelper = this;
         executorService.execute(() -> {
@@ -164,6 +179,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
             } finally {
                 db.endTransaction();
+            }
+        });
+    }
+
+    public void addExercise(Exercise exercise, Consumer<Long> onSuccess, Consumer<Exception> onError) {
+        DatabaseHelper dbHelper = this;
+        executorService.execute(() -> {
+            try {
+                SQLiteDatabase db = dbHelper.getWritableDatabase();
+                long exerciseId = insertExercise(exercise.getName());
+                new Handler(Looper.getMainLooper()).post(()-> onSuccess.accept(exerciseId));
+            } catch (Exception e) {
+                new Handler(Looper.getMainLooper()).post(() -> onError.accept(e));
             }
         });
     }

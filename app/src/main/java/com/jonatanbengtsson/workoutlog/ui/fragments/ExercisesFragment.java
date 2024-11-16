@@ -1,9 +1,13 @@
 package com.jonatanbengtsson.workoutlog.ui.fragments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +23,8 @@ public class ExercisesFragment extends DialogFragment {
    private ArrayList<Exercise> exercises;
    private RecyclerView recyclerView;
    private OnExerciseSelectedListener listener;
+   private Button btnAddExercise;
+   private ExerciseAdapter exerciseAdapter;
 
    public interface OnExerciseSelectedListener {
       void OnExerciseSelected(Exercise exercise);
@@ -42,9 +48,15 @@ public class ExercisesFragment extends DialogFragment {
    @Override
    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
       View rootView = inflater.inflate(R.layout.fragment_exercises, container, false);
+
+      btnAddExercise = rootView.findViewById(R.id.btnAddExercise);
+      btnAddExercise.setOnClickListener(v -> {
+         openAddExerciseDialog();
+      });
+
       recyclerView = rootView.findViewById(R.id.recyclerView);
       recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-      ExerciseAdapter exerciseAdapter = new ExerciseAdapter(exercises,  exercise -> {
+      exerciseAdapter = new ExerciseAdapter(exercises,  exercise -> {
          listener.OnExerciseSelected(exercise);
          dismiss();
       });
@@ -55,5 +67,28 @@ public class ExercisesFragment extends DialogFragment {
 
    public void setOnExerciseSelectedListener(OnExerciseSelectedListener listener) {
       this.listener = listener;
+   }
+
+   private void openAddExerciseDialog() {
+      EditText input = new EditText(getContext());
+      input.setHint("Enter name of exercise");
+
+      new AlertDialog.Builder(getContext())
+              .setTitle("Add exercise")
+              .setView(input)
+              .setPositiveButton("Save", (dialog, which) -> {
+                  String exerciseName = input.getText().toString().trim();
+                  Exercise newExercise = new Exercise(exerciseName);
+                  newExercise.saveToDatabaseAsync(onSuccess -> {
+                     exercises.add(newExercise);
+                     exerciseAdapter.notifyItemInserted(exercises.size() -1);
+                  }, onError -> {
+                     Toast.makeText(getContext(), "Database error", Toast.LENGTH_SHORT).show();
+                  });
+              })
+              .setNegativeButton("Cancel", (dialog, which) -> {
+                 dialog.dismiss();
+              })
+              .show();
    }
 }
