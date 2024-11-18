@@ -116,5 +116,4 @@ public class CreateWorkoutActivity extends AppCompatActivity {
                 })
                 .show();
     }
-
 }

@@ -13,6 +13,7 @@
         android:theme="@style/Theme.WorkoutLog" >
         <activity
             android:name=".ui.activities.CreateWorkoutActivity"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".ui.activities.WorkoutHistoryActivity"
