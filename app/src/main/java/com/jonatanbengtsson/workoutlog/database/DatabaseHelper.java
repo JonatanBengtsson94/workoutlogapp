@@ -72,6 +72,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + "FOREIGN KEY(" + DatabaseContract.SetsTable.COLUMN_EXERCISE_PERFORMED_ID_FK + ") REFERENCES "
                 + DatabaseContract.ExercisesPerformedTable.TABLE_NAME + "(" + DatabaseContract.ExercisesPerformedTable.COLUMN_EXERCISE_PERFORMED_ID + "))";
         db.execSQL(CREATE_SETS_TABLE);
+
+        String CREATE_EXERCISE_NAME_INDEX = "CREATE INDEX idx_exercise_name ON " + DatabaseContract.ExerciseTable.TABLE_NAME + " ("
+                + DatabaseContract.ExerciseTable.COLUMN_EXERCISE_NAME + ");";
+        db.execSQL(CREATE_EXERCISE_NAME_INDEX);
     }
 
     @Override
