@@ -2,6 +2,8 @@ package com.jonatanbengtsson.workoutlog.ui.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +27,7 @@ public class ExercisesFragment extends DialogFragment {
    private OnExerciseSelectedListener listener;
    private Button btnAddExercise;
    private ExerciseAdapter exerciseAdapter;
+   private EditText editSearchExercise;
 
    public interface OnExerciseSelectedListener {
       void OnExerciseSelected(Exercise exercise);
@@ -52,6 +55,21 @@ public class ExercisesFragment extends DialogFragment {
       btnAddExercise = rootView.findViewById(R.id.btnAddExercise);
       btnAddExercise.setOnClickListener(v -> {
          openAddExerciseDialog();
+      });
+
+      editSearchExercise = rootView.findViewById(R.id.editSearchExercise);
+      editSearchExercise.addTextChangedListener(new TextWatcher() {
+         @Override
+         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+         @Override
+         public void onTextChanged(CharSequence s, int start, int before, int count) {
+            String query = s.toString();
+            exerciseAdapter.getFilter().filter(query);
+         }
+
+         @Override
+         public void afterTextChanged(Editable s) {}
       });
 
       recyclerView = rootView.findViewById(R.id.recyclerView);
